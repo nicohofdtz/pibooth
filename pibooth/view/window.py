@@ -9,8 +9,8 @@ import contextlib
 import pygame
 from pygame import gfxdraw
 from PIL import Image
-from pibooth import pictures, fonts
-from pibooth.view import background
+from pibooth import fonts
+from pibooth.view import background, sprites
 from pibooth.utils import LOGGER
 from pibooth.pictures import sizing
 
@@ -157,9 +157,9 @@ class PiWindow(object):
 
         if side > 0:
             if self._print_failure:
-                image = pictures.get_pygame_image('printer_failure.png', (side, side), color=self.text_color)
+                image = sprites.get_pygame_image('printer_failure.png', (side, side), color=self.text_color)
             else:
-                image = pictures.get_pygame_image('printer.png', (side, side), color=self.text_color)
+                image = sprites.get_pygame_image('printer.png', (side, side), color=self.text_color)
             y = self.surface.get_rect().height - image.get_rect().height - 10
             self.surface.blit(image, (10, y))
             font = pygame.font.Font(fonts.CURRENT, side)

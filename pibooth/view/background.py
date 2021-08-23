@@ -3,7 +3,8 @@
 import os.path as osp
 import pygame
 
-from pibooth import fonts, pictures
+from pibooth import fonts
+from pibooth.view import sprites
 from pibooth.language import get_translated_text
 
 ARROW_TOP = 'top'
@@ -151,14 +152,14 @@ class Background(object):
             self._outlines = []
 
             if self._background_image:
-                self._background = pictures.get_pygame_image(
+                self._background = sprites.get_pygame_image(
                     self._background_image, (self._rect.width, self._rect.height), crop=True, color=None)
-                self._background_color = pictures.get_pygame_main_color(self._background)
+                self._background_color = sprites.get_pygame_main_color(self._background)
 
             overlay_name = "{}.png".format(self._name)
-            if osp.isfile(pictures.get_filename(overlay_name)):
-                self._overlay = pictures.get_pygame_image(
-                    pictures.get_filename(overlay_name), (self._rect.width, self._rect.height), color=self._text_color, bg_color=self._background_color)
+            if osp.isfile(sprites.get_filename(overlay_name)):
+                self._overlay = sprites.get_pygame_image(
+                    sprites.get_filename(overlay_name), (self._rect.width, self._rect.height), color=self._text_color, bg_color=self._background_color)
 
             self.resize_texts()
             self._need_update = True
@@ -202,7 +203,7 @@ class IntroBackground(Background):
             if self.arrow_location == ARROW_TOUCH:
                 size = (self._rect.width * 0.2, self._rect.height * 0.2)
 
-                self.left_arrow = pictures.get_pygame_image("camera.png", size, vflip=False, color=self._text_color)
+                self.left_arrow = sprites.get_pygame_image("camera.png", size, vflip=False, color=self._text_color)
 
                 x = int(self._rect.width * 0.2)
                 y = int(self._rect.height // 2)
@@ -210,7 +211,7 @@ class IntroBackground(Background):
                 size = (self._rect.width * 0.3, self._rect.height * 0.3)
 
                 vflip = True if self.arrow_location == ARROW_TOP else False
-                self.left_arrow = pictures.get_pygame_image("arrow.png", size, vflip=vflip, color=self._text_color)
+                self.left_arrow = sprites.get_pygame_image("arrow.png", size, vflip=vflip, color=self._text_color)
 
                 x = int(self._rect.left + self._rect.width // 4
                         - self.left_arrow.get_rect().width // 2)
@@ -272,12 +273,12 @@ class IntroWithPrintBackground(IntroBackground):
         if self._need_update and self.arrow_location != ARROW_HIDDEN:
             size = (self._rect.width * 0.1, self._rect.height * 0.1)
             if self.arrow_location == ARROW_TOUCH:
-                self.right_arrow = pictures.get_pygame_image("hand.png", size, hflip=False,
+                self.right_arrow = sprites.get_pygame_image("hand.png", size, hflip=False,
                                                              vflip=False, angle=-70, color=self._text_color)
             else:
                 vflip = True if self.arrow_location == ARROW_TOP else False
                 angle = -70 if self.arrow_location == ARROW_TOP else 70
-                self.right_arrow = pictures.get_pygame_image("arrow.png", size, hflip=False,
+                self.right_arrow = sprites.get_pygame_image("arrow.png", size, hflip=False,
                                                              vflip=vflip, angle=angle, color=self._text_color)
 
             x = int(self._rect.left + self._rect.width // 2
@@ -329,9 +330,9 @@ class ChooseBackground(Background):
         Background.resize(self, screen)
         if self._need_update:
             size = (self._rect.width * 0.45, self._rect.height * 0.6)
-            self.layout0 = pictures.get_pygame_layout_image(
+            self.layout0 = sprites.get_pygame_layout_image(
                 self._text_color, self._background_color, self.choices[0], size)
-            self.layout1 = pictures.get_pygame_layout_image(
+            self.layout1 = sprites.get_pygame_layout_image(
                 self._text_color, self._background_color, self.choices[1], size)
 
             inter = (self._rect.width - 2 * self.layout0.get_rect().width) // 3
@@ -354,9 +355,9 @@ class ChooseBackground(Background):
                     size = (self._rect.width * 0.1, self._rect.bottom - y - 5)
 
                 vflip = True if self.arrow_location == ARROW_TOP else False
-                self.left_arrow = pictures.get_pygame_image("arrow.png", size, vflip=vflip,
+                self.left_arrow = sprites.get_pygame_image("arrow.png", size, vflip=vflip,
                                                             color=self._text_color)
-                self.right_arrow = pictures.get_pygame_image("arrow.png", size, hflip=True,
+                self.right_arrow = sprites.get_pygame_image("arrow.png", size, hflip=True,
                                                              vflip=vflip, color=self._text_color)
 
                 inter = (self._rect.width - 2 * self.left_arrow.get_rect().width) // 4
@@ -403,7 +404,7 @@ class ChosenBackground(Background):
         if self._need_update:
             size = (self._rect.width * 0.6, self._rect.height * 0.6)
 
-            self.layout = pictures.get_pygame_layout_image(
+            self.layout = sprites.get_pygame_layout_image(
                 self._text_color, self._background_color, self.selected, size)
 
             x = self.layout.get_rect(center=self._rect.center).left
@@ -438,9 +439,9 @@ class CaptureBackground(Background):
             images_height = self._rect.height / 4
             size = (images_height * 2, images_height)
 
-            self.left_people = pictures.get_pygame_image("capture_left.png", size=size,
+            self.left_people = sprites.get_pygame_image("capture_left.png", size=size,
                                                          color=self._text_color)
-            self.right_people = pictures.get_pygame_image("capture_right.png", size=size,
+            self.right_people = sprites.get_pygame_image("capture_right.png", size=size,
                                                           color=self._text_color)
 
             x = int(self._rect.right - size[0])
@@ -490,7 +491,7 @@ class PrintBackground(Background):
             if self.arrow_location == ARROW_TOUCH:
                 size = (self._rect.width // 4, self._rect.height // 4)
                 # Right arrow
-                self.right_arrow = pictures.get_pygame_image(
+                self.right_arrow = sprites.get_pygame_image(
                     "printer_touch.png", size, hflip=False, vflip=False, color=self._text_color)
                 x = int(self._rect.left + self._rect.width * 0.70
                         - self.right_arrow.get_rect().width // 2)
@@ -501,7 +502,7 @@ class PrintBackground(Background):
                 vflip = True if self.arrow_location == ARROW_TOP else False
 
                 # Right arrow
-                self.right_arrow = pictures.get_pygame_image(
+                self.right_arrow = sprites.get_pygame_image(
                     "arrow.png", size, hflip=True, vflip=vflip, color=self._text_color)
 
                 x = int(self._rect.left + self._rect.width * 0.75
@@ -517,12 +518,12 @@ class PrintBackground(Background):
             size = (self._rect.width * 0.1, self._rect.height * 0.1)
 
             if self.arrow_location == ARROW_TOUCH:
-                self.left_arrow = pictures.get_pygame_image(
+                self.left_arrow = sprites.get_pygame_image(
                     "hand.png", size, hflip=False, vflip=False, angle=70, color=self._text_color)
             else:
                 vflip = True if self.arrow_location == ARROW_TOP else False
                 angle = 70 if self.arrow_location == ARROW_TOP else -70
-                self.left_arrow = pictures.get_pygame_image(
+                self.left_arrow = sprites.get_pygame_image(
                     "arrow.png", size, hflip=False, vflip=vflip, angle=angle, color=self._text_color)
 
             x = int(self._rect.left + self._rect.width // 2
@@ -597,9 +598,9 @@ class FinishedBackground(Background):
             right_rect.top = self._rect.centery - right_rect.centery
             right_rect.right = self._rect.right - 10
 
-            self.left_people = pictures.get_pygame_image("finished_left.png", size=left_rect.size,
+            self.left_people = sprites.get_pygame_image("finished_left.png", size=left_rect.size,
                                                          color=self._text_color)
-            self.right_people = pictures.get_pygame_image("finished_right.png", size=right_rect.size,
+            self.right_people = sprites.get_pygame_image("finished_right.png", size=right_rect.size,
                                                           color=self._text_color)
 
             self.left_people_pos = self.left_people.get_rect(center=left_rect.center).topleft
@@ -637,7 +638,7 @@ class FinishedWithImageBackground(FinishedBackground):
         if self._need_update:
             # Note: '0.9' ratio comes from PiWindow._update_foreground() method which
             # lets a margin between window borders and fullscreen foreground picture
-            frgnd_rect = pygame.Rect(0, 0, *pictures.sizing.new_size_keep_aspect_ratio(
+            frgnd_rect = pygame.Rect(0, 0, *sprites.sizing.new_size_keep_aspect_ratio(
                 self.foreground_size, (self._rect.size[0] * 0.9, self._rect.size[1]*0.9)))
             xmargin = abs(self._rect.width - frgnd_rect.width) // 2
             ymargin = abs(self._rect.height - frgnd_rect.height) // 2
@@ -646,7 +647,7 @@ class FinishedWithImageBackground(FinishedBackground):
                 margin = min(xmargin, self._rect.height // 3)
             elif ymargin > 50:
                 margin = min(ymargin, self._rect.width // 3)
-            else: # Too small
+            else:  # Too small
                 self.left_people = None
                 self.right_people = None
                 return
@@ -656,9 +657,9 @@ class FinishedWithImageBackground(FinishedBackground):
             left_rect.bottom = self._rect.bottom
             right_rect.right = self._rect.right
 
-            self.left_people = pictures.get_pygame_image("finished_left.png", size=left_rect.size,
+            self.left_people = sprites.get_pygame_image("finished_left.png", size=left_rect.size,
                                                          color=self._text_color)
-            self.right_people = pictures.get_pygame_image("finished_right.png", size=right_rect.size,
+            self.right_people = sprites.get_pygame_image("finished_right.png", size=right_rect.size,
                                                           color=self._text_color)
 
             self.left_people_pos = self.left_people.get_rect(center=left_rect.center).topleft
