@@ -227,6 +227,9 @@ class GpCamera(BaseCamera):
         self._window = window
         self.preview_flip = flip
 
+        if self.capture_iso != self.preview_iso:
+            self.set_config_value('imgsettings', 'iso', self.preview_iso)
+            
         if self._preview_compatible:
             if self._preview_viewfinder:
                 self.set_config_value('actions', 'viewfinder', 1)
