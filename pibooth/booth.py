@@ -29,6 +29,7 @@ from pibooth.view import PtbWindow
 from pibooth.config import PiConfigParser, PiConfigMenu
 from pibooth.fonts import get_available_fonts
 from pibooth.printer import PRINTER_TASKS_UPDATED, Printer
+# import time
 
 
 # Set the default pin factory to a mock factory if pibooth is not started a Raspberry Pi
@@ -342,6 +343,7 @@ class PiApplication(object):
         """
         try:
             fps = 40
+            # check_camera_counter = 0
             clock = pygame.time.Clock()
             self._initialize()
             self._pm.hook.pibooth_startup(cfg=self._config, app=self)
@@ -377,6 +379,32 @@ class PiApplication(object):
                     self._machine.process(events)
 
                 pygame.display.update()
+                # check_camera_counter +=1
+                # if check_camera_counter == fps:
+                #     try: 
+                #         self.camera.get_summary()
+                #     except:
+                #         camera_recon = False
+                #         while not camera_recon:
+                #             time.sleep(2)
+                #             try: 
+                #                 self.camera.get_summary()
+                #                 camera_recon = True
+                #             except:
+                #                 LOGGER.debug('\n')
+                #                 LOGGER.debug('\n')
+                #                 LOGGER.debug("x"*20)
+                #                 LOGGER.debug('Reconnecting camera.')
+                #                 try:
+                #                     self.camera = self._pm.hook.pibooth_setup_camera(cfg=self._config)
+                #                     self._machine.process(events)
+                #                 except BaseException as e:
+                #                     LOGGER.debug("Couldn't reconnect")
+                #                     LOGGER.debug(e)
+                #                 LOGGER.debug("x"*20)
+                #                 LOGGER.debug('\n')
+                #                 LOGGER.debug('\n')
+                # check_camera_counter %= fps
                 clock.tick(fps)  # Ensure the program will never run at more than <fps> frames per second
 
         except Exception as ex:

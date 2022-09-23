@@ -349,3 +349,7 @@ class GpCamera(BaseCamera):
         if self._cam:
             del self._gp_logcb  # Uninstall log callback
             self._cam.exit()
+
+    def get_summary(self):
+        return self._cam.get_summary()
+            
